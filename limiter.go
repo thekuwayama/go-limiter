@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Songmu/flextime"
 )
 
 const (
@@ -74,7 +76,7 @@ func New(q Quota, store Store, keyer Keyer, identifier Identifier) Limiter {
 }
 
 func (l Limiter) Key(id string) string {
-	now := time.Now()
+	now := flextime.Now()
 	slot := now.Unix() / int64(l.quota.Within.Seconds())
 	return l.Keyer(now, slot, id)
 }
@@ -89,7 +91,7 @@ func (l Limiter) Check(req *http.Request) (Result, error) {
 		return Result{}, nil
 	}
 
-	now := time.Now()
+	now := flextime.Now()
 	key := l.Key(id)
 	count, err := l.store.Get(key, l.quota.Within)
 	if err != nil {
