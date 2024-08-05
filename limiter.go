@@ -209,6 +209,4 @@ func HeaderIdentifier(name string) Identifier {
 	}
 }
 
-var NowFunc = func() time.Time {
-	return time.Now()
-}
+var NowFunc = time.Now
